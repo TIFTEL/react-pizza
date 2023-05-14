@@ -1,33 +1,35 @@
 import {useState} from "react";
 
-function PizzaBlock(props) {
-    const [pizzaCount, setPizzaCount] = useState(0)
+function PizzaBlock(props, imageUrl, sizes, types) {
+    const [activeType,setActiveType]=useState(0)
+    const [activeSize,setActiveSize]=useState(0)
+    const typeNames = ['тонкое','традиционное']
 
-    const onClickAdd = () =>{
-        setPizzaCount(pizzaCount + 1)
-    }
   return (
     <div className="pizza-block">
       <img
           className="pizza-block__image"
-        src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+        src={props.imageUrl}
         alt="Pizza"
       />
       <h4 className="pizza-block__title">{props.title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+            {
+                props.types.map((typeId)=>(
+                    <li onClick={()=>setActiveType(typeId)} className={activeType === typeId ? 'active' :''}>{typeNames[typeId]} </li> // выбор необходимого теста (традиционное и нет)
+                ))}
         </ul>
         <ul>
-          <li className="active">26 см.</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+            {
+                props.sizes.map((size,i)=>(
+                    <li onClick={()=>setActiveSize(i)} className={activeSize === i ? 'active' :''}>{size} см.</li>// выбор необходимого размера (26, 30, 40)
+                ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {props.price} ₽</div>
-        <div onClick={onClickAdd} className="button button--outline button--add">
+        <div className="button button--outline button--add">
           <svg
             width="12"
             height="12"
@@ -41,7 +43,7 @@ function PizzaBlock(props) {
             />
           </svg>
           <span>Добавить</span>
-          <i>{pizzaCount}</i>
+          <i>0</i>
         </div>
       </div>
     </div>
